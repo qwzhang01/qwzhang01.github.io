@@ -64,12 +64,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qwzhang01.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qwzhang01.github.io"></form>
       </div>
     </div>
   </div>
@@ -78,103 +78,25 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-设计模式——单例" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B/" class="article-date">
-  <time class="dt-published" datetime="2021-09-13T02:36:35.013Z" itemprop="datePublished">2021-09-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="设计模式——单例"><a href="#设计模式——单例" class="headerlink" title="设计模式——单例"></a>设计模式——单例</h3><ul>
-<li><p>是什么</p>
-<ul>
-<li>单例是创建型设计模式</li>
-<li>在内存中只有一个实例化对象</li>
-<li>全局只有一个访问点获取实例化对象</li>
-</ul>
-</li>
-<li><p>解决什么问题</p>
-<ul>
-<li>对象重复创建，浪费开销</li>
-<li>内存有多个相同的对象，浪费空间</li>
-</ul>
-</li>
-<li><p>实现方式分类</p>
-<ul>
-<li>饿汉模式，类初始化完创建对象</li>
-<li>懒汉模式，第一次调用时创建对象</li>
-</ul>
-</li>
-<li><p>饿汉模式实现方式</p>
-<ul>
-<li><p>私有化构造方法</p>
-</li>
-<li><p>初始化私有的static final属性为实例化对象</p>
-</li>
-<li><p>对外暴露getInstance静态方法</p>
-</li>
-<li><p>代码示例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton INSTANCE = <span class="keyword">new</span> Singleton();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>懒汉模式实现方式</p>
-<ul>
-<li><p>getInstance方法加synchronized，防止多线程同时调用创建多个对象。所有获取单例实例化对象都会加锁。单例、线程安全、性能差。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Singleton &#123;</span><br><span class="line">    private static Singleton INSTANCE = null;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized Singleton getInstance() &#123;</span><br><span class="line">        if (INSTANCE == null) &#123;</span><br><span class="line">            INSTANCE = new Singleton();</span><br><span class="line">        &#125;</span><br><span class="line">        return INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>双重检查锁，只有在INSTANCE为空的时候加锁，常规获取单例不加锁，避免频繁加锁；给INSTANCE添加volatile，多线程其他线程可以获取INSTANCE最新创建情况。单例、线程安全、性能好。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Singleton &#123;</span><br><span class="line">    private volatile static Singleton INSTANCE = null;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getInstance() &#123;</span><br><span class="line">        if (INSTANCE == null) &#123;</span><br><span class="line">            synchronized (Singleton.class) &#123;</span><br><span class="line">                if (INSTANCE == null) &#123;</span><br><span class="line">                    INSTANCE = new Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>静态内部类，利用类加载机制保障单例及线程安全。单例、线程安全、性能好。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Singleton &#123;</span><br><span class="line">    private static class SingletonHolder &#123;</span><br><span class="line">        private static final Singleton INSTANCE = new Singleton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static final Singleton getInstance() &#123;</span><br><span class="line">        return SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>枚举，枚举类型及枚举变量在JVM中都是唯一的，同时枚举类型在序列化和反序列化在JVM也是同一个，可以保证绝对单例。序列化单例、线程安全、性能好。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public enum Singleton &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>关联知识点</p>
-<ul>
-<li><p>类加载过程，加载-&gt;验证-&gt;准备-&gt;解析-&gt;初始化，初始化会对静态变量赋值，由此可知饿汉模式类加载完成对象即创建完。</p>
-<blockquote>
-<p>加载：字节码加载到内存<br>验证：验证格式<br>准备：静态变量分配内存，初始化默认值<br>解析：静态链接，符号引用转换为直接引用<br>初始化：静态变量赋值，静态方法区执行</p>
-</blockquote>
-</li>
-<li><p>静态内部类，静态内部类在使用的时候才会加载，类加载会初始化static变量。</p>
-</li>
-<li><p>线程安全，内存模型，volatile，synchronized，设计知识点略多，以后单独写。</p>
-</li>
-<li><p>枚举特性，枚举类型及枚举变量在JVM中都是唯一的。在序列化的时候Java将枚举对象的name属性输出到结果中，反序列化的时候通过java.lang.Enum的valueOf方法来根据名字查找枚举对象。</p>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://qwzhang01.github.io/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B/" data-id="ckti1fs480001goys4v394s1x" data-title="" class="article-share-link">Compartir</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-设计模式——准备：Solid设计原则、UML类图、设计模式分类" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2021/09/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%EF%BC%9ASolid%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E3%80%81UML%E7%B1%BB%E5%9B%BE%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%88%86%E7%B1%BB/" class="article-date">
-  <time class="dt-published" datetime="2021-09-10T08:28:55.540Z" itemprop="datePublished">2021-09-10</time>
+    <a href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%EF%BC%9ASolid%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E3%80%81UML%E7%B1%BB%E5%9B%BE%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%88%86%E7%B1%BB/" class="article-date">
+  <time class="dt-published" datetime="2021-09-13T02:41:58.000Z" itemprop="datePublished">2021-09-13</time>
 </a>
     
   </div>
   <div class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%EF%BC%9ASolid%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E3%80%81UML%E7%B1%BB%E5%9B%BE%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%88%86%E7%B1%BB/">设计模式——准备：Solid设计原则、UML类图、设计模式分类</a>
+    </h1>
+  
+
+      </header>
     
     <div class="e-content article-entry" itemprop="articleBody">
       
@@ -276,10 +198,193 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qwzhang01.github.io/2021/09/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%EF%BC%9ASolid%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E3%80%81UML%E7%B1%BB%E5%9B%BE%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%88%86%E7%B1%BB/" data-id="ckti1fs440000goysg7dv3bsn" data-title="" class="article-share-link">Compartir</a>
+      <a data-url="https://qwzhang01.github.io/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%EF%BC%9ASolid%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E3%80%81UML%E7%B1%BB%E5%9B%BE%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%88%86%E7%B1%BB/" data-id="ckti1fs440000goysg7dv3bsn" data-title="设计模式——准备：Solid设计原则、UML类图、设计模式分类" class="article-share-link">Teilen</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-设计模式——单例" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-09-13T02:41:58.000Z" itemprop="datePublished">2021-09-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B/">设计模式——单例</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="设计模式——单例"><a href="#设计模式——单例" class="headerlink" title="设计模式——单例"></a>设计模式——单例</h3><ul>
+<li><p>是什么</p>
+<ul>
+<li>单例是创建型设计模式</li>
+<li>在内存中只有一个实例化对象</li>
+<li>全局只有一个访问点获取实例化对象</li>
+</ul>
+</li>
+<li><p>解决什么问题</p>
+<ul>
+<li>对象重复创建，浪费开销</li>
+<li>内存有多个相同的对象，浪费空间</li>
+</ul>
+</li>
+<li><p>实现方式分类</p>
+<ul>
+<li>饿汉模式，类初始化完创建对象</li>
+<li>懒汉模式，第一次调用时创建对象</li>
+</ul>
+</li>
+<li><p>饿汉模式实现方式</p>
+<ul>
+<li><p>私有化构造方法</p>
+</li>
+<li><p>初始化私有的static final属性为实例化对象</p>
+</li>
+<li><p>对外暴露getInstance静态方法</p>
+</li>
+<li><p>代码示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton INSTANCE = <span class="keyword">new</span> Singleton();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>懒汉模式实现方式</p>
+<ul>
+<li><p>getInstance方法加synchronized，防止多线程同时调用创建多个对象。所有获取单例实例化对象都会加锁。单例、线程安全、性能差。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Singleton &#123;</span><br><span class="line">    private static Singleton INSTANCE = null;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static synchronized Singleton getInstance() &#123;</span><br><span class="line">        if (INSTANCE == null) &#123;</span><br><span class="line">            INSTANCE = new Singleton();</span><br><span class="line">        &#125;</span><br><span class="line">        return INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>双重检查锁，只有在INSTANCE为空的时候加锁，常规获取单例不加锁，避免频繁加锁；给INSTANCE添加volatile，多线程其他线程可以获取INSTANCE最新创建情况。单例、线程安全、性能好。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Singleton &#123;</span><br><span class="line">    private volatile static Singleton INSTANCE = null;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getInstance() &#123;</span><br><span class="line">        if (INSTANCE == null) &#123;</span><br><span class="line">            synchronized (Singleton.class) &#123;</span><br><span class="line">                if (INSTANCE == null) &#123;</span><br><span class="line">                    INSTANCE = new Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>静态内部类，利用类加载机制保障单例及线程安全。单例、线程安全、性能好。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Singleton &#123;</span><br><span class="line">    private static class SingletonHolder &#123;</span><br><span class="line">        private static final Singleton INSTANCE = new Singleton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static final Singleton getInstance() &#123;</span><br><span class="line">        return SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>枚举，枚举类型及枚举变量在JVM中都是唯一的，同时枚举类型在序列化和反序列化在JVM也是同一个，可以保证绝对单例。序列化单例、线程安全、性能好。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public enum Singleton &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>关联知识点</p>
+<ul>
+<li><p>类加载过程，加载-&gt;验证-&gt;准备-&gt;解析-&gt;初始化，初始化会对静态变量赋值，由此可知饿汉模式类加载完成对象即创建完。</p>
+<blockquote>
+<p>加载：字节码加载到内存<br>验证：验证格式<br>准备：静态变量分配内存，初始化默认值<br>解析：静态链接，符号引用转换为直接引用<br>初始化：静态变量赋值，静态方法区执行</p>
+</blockquote>
+</li>
+<li><p>静态内部类，静态内部类在使用的时候才会加载，类加载会初始化static变量。</p>
+</li>
+<li><p>线程安全，内存模型，volatile，synchronized，设计知识点略多，以后单独写。</p>
+</li>
+<li><p>枚举特性，枚举类型及枚举变量在JVM中都是唯一的。在序列化的时候Java将枚举对象的name属性输出到结果中，反序列化的时候通过java.lang.Enum的valueOf方法来根据名字查找枚举对象。</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qwzhang01.github.io/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B/" data-id="ckti1fs480001goys4v394s1x" data-title="设计模式——单例" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-线程状态、切换、创建" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/13/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E3%80%81%E5%88%87%E6%8D%A2%E3%80%81%E5%88%9B%E5%BB%BA/" class="article-date">
+  <time class="dt-published" datetime="2021-09-13T02:41:58.000Z" itemprop="datePublished">2021-09-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/13/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E3%80%81%E5%88%87%E6%8D%A2%E3%80%81%E5%88%9B%E5%BB%BA/">线程状态、切换、创建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="线程状态、切换、创建"><a href="#线程状态、切换、创建" class="headerlink" title="线程状态、切换、创建"></a>线程状态、切换、创建</h2><ol>
+<li><p>线程状态</p>
+<ul>
+<li>New，新建</li>
+<li>Runnable，可运行状态</li>
+<li>Running，运行中</li>
+<li>Block，阻塞中。分为释放锁和不释放锁的阻塞</li>
+<li>Terminal，结束</li>
+</ul>
+</li>
+<li><p>线程切换 </p>
+<ul>
+<li><p>Thread 静态方法</p>
+<blockquote>
+<p>sleep(), 当前线程停止，不释放锁。</p>
+<p>yield(), 当前线程让出CPU时间片进入可运行状态从新竞争获取CPU时间片</p>
+</blockquote>
+</li>
+<li><p>Thread对象方法</p>
+<blockquote>
+<p>join(), 当前线程等待join()线程结束后再继续，不释放锁</p>
+</blockquote>
+</li>
+<li><p>Object方法</p>
+<blockquote>
+<p>wait(), 等待并释放锁。</p>
+<p>notify(), notifyAll()，等待状态的线程重新进入Runable状态竞争CPU时间片。</p>
+<p>这几个方法需要在加锁的代码中执行，否则会异常。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>线程创建</p>
+<ul>
+<li>继承Thread</li>
+<li>实现Runnable</li>
+<li>实现Callable</li>
+<li>线程池</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qwzhang01.github.io/2021/09/13/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E3%80%81%E5%88%87%E6%8D%A2%E3%80%81%E5%88%9B%E5%BB%BA/" data-id="ckti1km8o000000ysbb8td8td" data-title="线程状态、切换、创建" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag">Java并发编程</a></li></ul>
+
     </footer>
   </div>
   
@@ -298,13 +403,27 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag">Java并发编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">Java并发编程</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 20px;">设计模式</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archivos</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li></ul>
     </div>
@@ -314,16 +433,20 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Posts recientes</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B/">(no title)</a>
+            <a href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%EF%BC%9ASolid%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E3%80%81UML%E7%B1%BB%E5%9B%BE%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%88%86%E7%B1%BB/">设计模式——准备：Solid设计原则、UML类图、设计模式分类</a>
           </li>
         
           <li>
-            <a href="/2021/09/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%EF%BC%9ASolid%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E3%80%81UML%E7%B1%BB%E5%9B%BE%E3%80%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%88%86%E7%B1%BB/">(no title)</a>
+            <a href="/2021/09/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B/">设计模式——单例</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/13/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E3%80%81%E5%88%87%E6%8D%A2%E3%80%81%E5%88%9B%E5%BB%BA/">线程状态、切换、创建</a>
           </li>
         
       </ul>
@@ -340,7 +463,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2021 Avin Zhang<br>
-      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
